@@ -1,4 +1,7 @@
-namespace FanSpeedMonitor
+using System;
+using System.Windows.Forms;
+
+namespace MSI_Claw_Fan_PRM
 {
     internal static class Program
     {
@@ -6,6 +9,7 @@ namespace FanSpeedMonitor
         static void Main()
         {
             ApplicationConfiguration.Initialize();
+
             Application.Run(new MainForm());
         }
     }
