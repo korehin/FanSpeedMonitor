@@ -1,8 +1,8 @@
 # MSI Claw Fan PRM Monitor
 Поддержка:
-MSI Claw A1M (1st Gen)
-MSI Claw A2VM 7
-MSI Claw A2VM 8 AI+
+- MSI Claw A1M (1st Gen)
+- MSI Claw A2VM 7
+- MSI Claw A2VM 8 AI+
 
 Приложение для отображения текущей скорости вентиляторов Fan_1 и Fan_2. И передачи показаний в Performance Counters для дальнейшего отображения в RTSS.
 
@@ -14,10 +14,7 @@ MSI Claw A2VM 8 AI+
 
 ## Как собрать EXE
 
-### 1️⃣ Скачайте source 
-```
-Запустите build.bat
-```
+### 1️⃣ Запустите build.bat
 
 ### 2️⃣ Найдите готовый EXE
 ```
@@ -42,7 +39,7 @@ MSI Claw A2VM 8 AI+
 ## Если не работает
  Попробуйте запустить от Администратора.
 
-### Ошибка при сборке в Visual Studio
+### Ошибка при сборке
 1. Убедитесь, что установлен .NET 8.0 SDK
 2. Выполните `Tools → Get Tools and Features → Individual Components` и установите:
    - .NET 8.0 Runtime
