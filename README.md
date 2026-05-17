@@ -5,6 +5,9 @@
 - MSI Claw A2VM 8 AI+
 
 Приложение для отображения текущей скорости вентиляторов Fan_1 и Fan_2. И передачи показаний в Performance Counters для дальнейшего отображения в RTSS.
+## Скачать
+
+https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_Fan_PRM.zip
 
 ## Требования
 
