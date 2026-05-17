@@ -4,7 +4,8 @@
 - MSI Claw A2VM 7
 - MSI Claw A2VM 8 AI+
 
-Приложение для отображения текущей скорости вентиляторов Fan_1 и Fan_2. И передачи показаний в Performance Counters для дальнейшего отображения в RTSS.
+Приложение для отображения текущей скорости вентиляторов Fan_1 и Fan_2.
+Передача показаний в "Счетчик производительности Windows" (Windows Performance Counters) для дальнейшего отображения в RTSS.
 ## Скачать
 
 https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_Fan_PRM.zip
@@ -29,15 +30,16 @@ https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_F
 
 - 🟢 Отображение скорости вентиляторов в RPM
 - 📊 Обновление каждые 1 секунду
-- 🔗 Автоматическая передача данных в "Счетчик производительности Windows" (Performance Counters)
+- 🔗 Автоматическая передача данных в "Счетчик производительности Windows" (Windows Performance Counters)
 - 📡 Возможность добавления в автозапуск
 - 📡 Возможность автозапуска свернутого в трей
-## RivaTuner Statistics Server (RTSS)
-- Setup
+- 
+## Настройка RivaTuner Statistics Server (RTSS)
+- Кнопка Setup
 - Плагины -> OverlayEditor.dll
 - Источники -> Редактировать
 - Добавить -> Счетчик производительности Windows
-- Найти MSI Claw -> Fan1 PRM и Fan2 PRM
+- Найти в списке MSI Claw -> Fan1 PRM и Fan2 PRM
 
 ## Если не работает
  Попробуйте запустить от Администратора.
