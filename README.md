@@ -8,9 +8,9 @@
 Передача показаний в "Счетчик производительности Windows" (Windows Performance Counters) для дальнейшего отображения в RTSS.
 ## Скачать
 Последняя версия:
-https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
+- https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
 Готовый overlay:
-https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
+- https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
 
 ## Требования
 
