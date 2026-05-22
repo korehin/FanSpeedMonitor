@@ -10,7 +10,7 @@
 Последняя версия:
 - https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
 
-  Готовый overlay:
+Готовый overlay:
 - https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
 
 ## Требования
