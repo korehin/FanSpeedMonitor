@@ -7,8 +7,10 @@
 Приложение для отображения текущей скорости вентиляторов Fan_1 и Fan_2.
 Передача показаний в "Счетчик производительности Windows" (Windows Performance Counters) для дальнейшего отображения в RTSS.
 ## Скачать
-
-https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_Fan_PRM.zip
+Последняя версия:
+https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
+Готовый overlay:
+https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
 
 ## Требования
 
@@ -45,6 +47,7 @@ https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_F
 УСТАНОВКА И НАСТРОЙКА ГОТОВОГО РЕШЕНИЯ
 =====
 
+
 ## Настройка MSI Claw 8ai
 -Задать на кнопку M1 или M2 любую кнопку с клавиатуры (я выбрал insert)
 
@@ -56,7 +59,8 @@ https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_F
 - Выбрать строчку HotkeyHandler.dll и нажать Настроить
 - В строчку Переключить видимость ОЭД ставите курсор и нажимаете кнопку которую выбрали для M1 или M2.
 
-## Установка и настройка HWinfo (Можно без HWinfo, тогда не будут показываться пункты: Температура GPU, Load NPU, Clock NPU частота RAM)
+## Установка и настройка HWinfo 
+(Можно без HWinfo, тогда не будут показываться пункты: Температура GPU, Load NPU, Clock NPU частота RAM)
 - Установить hwi64
 - В настройках Hwinfo поставить галки:
 Показывать датчики при запуске
@@ -69,12 +73,6 @@ https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/release/MSI_Claw_F
 
 ## Если не работает
  Попробуйте запустить от Администратора.
-
-### Ошибка при сборке
-1. Убедитесь, что установлен .NET 8.0 SDK
-2. Выполните `Tools → Get Tools and Features → Individual Components` и установите:
-   - .NET 8.0 Runtime
-   - Windows Forms support for .NET
 
 ## Лицензия
 
