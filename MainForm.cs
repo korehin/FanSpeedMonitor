@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Management;
 using System.Windows.Forms;
@@ -20,12 +19,14 @@ namespace MSI_Claw_Fan_PRM
         private PerformanceCounter? perfCounter1;
         private PerformanceCounter? perfCounter2;
 
-        private NotifyIcon trayIcon;
-        private ContextMenuStrip trayMenu;
+        private readonly Icon _shieldIcon;
 
-        private bool reallyClose = false;
+        private readonly NotifyIcon trayIcon;
+        private readonly ContextMenuStrip trayMenu;
 
-        private const string AppName    = "MSI_Claw_Fan_PRM";
+        private volatile bool reallyClose = false;
+
+        private const string AppName     = "MSI_Claw_Fan_PRM";
         private const string RegAutostart = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private const string RegSettings  = @"SOFTWARE\MSI_Claw_Fan_PRM";
 
@@ -38,53 +39,87 @@ namespace MSI_Claw_Fan_PRM
 
         private bool GetAutostart()
         {
-            using RegistryKey? key = Registry.CurrentUser.OpenSubKey(
-                RegAutostart, false);
+            try
+            {
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(
+                    RegAutostart, false);
 
-            return key?.GetValue(AppName) != null;
+                return key?.GetValue(AppName) != null;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void SetAutostart(bool enable)
         {
-            using RegistryKey? key = Registry.CurrentUser.OpenSubKey(
-                RegAutostart, true);
-
-            if (key == null)
-                return;
-
-            if (enable)
+            try
             {
-                string exePath =
-                    Process.GetCurrentProcess()
-                        .MainModule?
-                        .FileName ?? string.Empty;
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(
+                    RegAutostart, true);
 
-                if (!string.IsNullOrEmpty(exePath))
-                    key.SetValue(AppName, $"\"{exePath}\"");
+                if (key == null)
+                    return;
+
+                if (enable)
+                {
+                    string exePath =
+                        Process.GetCurrentProcess()
+                            .MainModule?
+                            .FileName ?? string.Empty;
+
+                    if (!string.IsNullOrEmpty(exePath))
+                        key.SetValue(AppName, $"\"{exePath}\"");
+                }
+                else
+                {
+                    // Используем true для throwOnMissingValue - не выбрасывать исключение
+                    if (key.GetValue(AppName) != null)
+                        key.DeleteValue(AppName, false);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                key.DeleteValue(AppName, false);
+                MessageBox.Show(
+                    $"Ошибка при изменении автозапуска: {ex.Message}",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private bool GetStartMinimized()
         {
-            using RegistryKey? key = Registry.CurrentUser.OpenSubKey(
-                RegSettings, false);
+            try
+            {
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(
+                    RegSettings, false);
 
-            return key?.GetValue("StartMinimized") is int v && v == 1;
+                return key?.GetValue("StartMinimized") is int v && v == 1;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void SetStartMinimized(bool enable)
         {
-            using RegistryKey? key = Registry.CurrentUser.CreateSubKey(
-                RegSettings, true);
+            try
+            {
+                using RegistryKey? key = Registry.CurrentUser.CreateSubKey(
+                    RegSettings, true);
 
-            key?.SetValue(
-                "StartMinimized",
-                enable ? 1 : 0,
-                RegistryValueKind.DWord);
+                key?.SetValue(
+                    "StartMinimized",
+                    enable ? 1 : 0,
+                    RegistryValueKind.DWord);
+            }
+            catch
+            {
+                // Игнорируем ошибки
+            }
         }
 
         public MainForm()
@@ -105,17 +140,21 @@ namespace MSI_Claw_Fan_PRM
             StartPosition =
                 FormStartPosition.CenterScreen;
 
+            // Копируем ресурс в MemoryStream, чтобы иконка не зависела
+            // от времени жизни исходного потока манифеста
+            var rawStream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("MSI_Claw_Fan_PRM.shield.ico");
 
+            if (rawStream == null)
+                throw new InvalidOperationException("Icon resource not found");
 
+            var memStream = new System.IO.MemoryStream();
+            rawStream.CopyTo(memStream);
+            rawStream.Dispose();
+            memStream.Position = 0;
 
-using var stream = Assembly.GetExecutingAssembly()
-    .GetManifestResourceStream("MSI_Claw_Fan_PRM.shield.ico");
-
-if (stream == null)
-    throw new InvalidOperationException("Icon resource not found");
-
-Icon shieldIcon = new Icon(stream);
-this.Icon = shieldIcon;
+            _shieldIcon = new Icon(memStream);
+            this.Icon = _shieldIcon;
 
             lblValue = new Label
             {
@@ -169,17 +208,26 @@ this.Icon = shieldIcon;
 
             CreateCategory();
 
-            perfCounter1 =
-                new PerformanceCounter(
-                    "MSI Claw",
-                    "Fan1 RPM",
-                    false);
+            try
+            {
+                perfCounter1 =
+                    new PerformanceCounter(
+                        "MSI Claw",
+                        "Fan1 RPM",
+                        false);
 
-            perfCounter2 =
-                new PerformanceCounter(
-                    "MSI Claw",
-                    "Fan2 RPM",
-                    false);
+                perfCounter2 =
+                    new PerformanceCounter(
+                        "MSI Claw",
+                        "Fan2 RPM",
+                        false);
+            }
+            catch
+            {
+                // Если не удалось создать счётчики, продолжаем работу без них
+                perfCounter1 = null;
+                perfCounter2 = null;
+            }
 
             timer =
                 new System.Windows.Forms.Timer();
@@ -199,7 +247,7 @@ this.Icon = shieldIcon;
             trayIcon =
                 new NotifyIcon();
 
-            trayIcon.Icon = shieldIcon;
+            trayIcon.Icon = _shieldIcon;
 
             trayIcon.Text =
                 "MSI Fan Monitor";
@@ -375,7 +423,7 @@ this.Icon = shieldIcon;
 
             pkg[0] = idx;
 
-            ManagementObject pMO =
+            using ManagementObject pMO =
                 new ManagementObject(
                     scope,
                     new ManagementPath(
@@ -395,7 +443,7 @@ this.Icon = shieldIcon;
 
             if (!ok)
             {
-                ManagementBaseObject pWO =
+                ManagementBaseObject? pWO =
                     pMO.InvokeMethod(
                     "Get_WMI",
                     null,
@@ -423,7 +471,7 @@ this.Icon = shieldIcon;
 
             pIn["Data"] = pData;
 
-            ManagementBaseObject pOut =
+            ManagementBaseObject? pOut =
                 pMO.InvokeMethod(
                     "Get_Fan",
                     pIn,
@@ -517,6 +565,35 @@ this.Icon = shieldIcon;
 
             if (perfCounter2 != null)
                 perfCounter2.RawValue = fan2r;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Останавливаем таймер
+                timer?.Stop();
+                timer?.Dispose();
+
+                // Освобождаем Performance Counters
+                perfCounter1?.Dispose();
+                perfCounter2?.Dispose();
+
+                // Освобождаем иконку в трее
+                if (trayIcon != null)
+                {
+                    trayIcon.Visible = false;
+                    trayIcon.Dispose();
+                }
+
+                // Освобождаем меню
+                trayMenu?.Dispose();
+
+                // Освобождаем иконку
+                _shieldIcon?.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
