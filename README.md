@@ -8,7 +8,7 @@
 Передача показаний в "Счетчик производительности Windows" (Windows Performance Counters) для дальнейшего отображения в RTSS.
 ## Скачать
 Последняя версия:
-- https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
+- https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/MSI_Claw_Fan_PRM.zip
 
 Готовый overlay:
 - https://github.com/korehin/MSI_Claw_Fan_PRM/releases/download/Release/Claw8ai_full_NPU_v1.1.zip
@@ -36,7 +36,7 @@
 - 🔗 Автоматическая передача данных в "Счетчик производительности Windows" (Windows Performance Counters)
 - 📡 Возможность добавления в автозапуск Windows
 - 📡 Возможность сворачивания в трей при запуске
-- 
+ 
 ## Настройка RivaTuner Statistics Server (RTSS)
 - Кнопка Setup
 - Плагины -> OverlayEditor.dll
